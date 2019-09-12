@@ -20,12 +20,12 @@ void locape::set_arg(VectorXcd &data_a, double f1_a, double f2_a, int p_a, int M
 
     // assign fv
     double bin = (double) 1.0/L;
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int i=0;i<L;i++) {
         fv(i) = 0+i*bin;
     }
     // assign indcol
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int i=0;i<num_col;i++) {
         indcol(i) = -p*pn+i*pn;
     }
@@ -40,7 +40,7 @@ void locape::set_arg(VectorXcd &data_a, double f1_a, double f2_a, int p_a, int M
         mid = jH+indcol(indcol.size()-1)-jL-indcol(0)+1;
     }
     indfreq = Eigen::VectorXi::Zero(mid);
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int i=0;i<mid;i++) {
             indfreq(i) = jL+indcol(0)+i-1;
     } // assign indfreq
@@ -52,7 +52,7 @@ void locape::set_arg(VectorXcd &data_a, double f1_a, double f2_a, int p_a, int M
     dataB = data.conjugate().colwise().reverse(); // conjugate and reverse slices
     XF = Eigen::VectorXcd::Zero(M); // define a complex vector to store foreward data
     XB = Eigen::VectorXcd::Zero(M); // define a complex vector to store backward data
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int i=0;i<M;i++) {
         XF(i) = data(i);
         XB(i) = dataB(i);
@@ -62,7 +62,7 @@ void locape::set_arg(VectorXcd &data_a, double f1_a, double f2_a, int p_a, int M
     YF = MatrixXcd::Zero(len_ind, K);
     YB = MatrixXcd::Zero(len_ind, K);
     F = MatrixXcd::Zero(len_ind, M);
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int i1=0;i1<len_ind;i1++) {
         for (int i2=0;i2<M;i2++) {
             F(i1,i2) = complex<double> (cos(-2*pi*fv(indfreq(i1))*i2),sin(-2*pi*fv(indfreq(i1))*i2));
@@ -71,7 +71,7 @@ void locape::set_arg(VectorXcd &data_a, double f1_a, double f2_a, int p_a, int M
     // for output
     XLoCapE = Eigen::MatrixXcd::Zero(eta.size(),jH-jL+1);
     fL = Eigen::VectorXcd::Zero(jH-jL+1);
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int i=0;i<jH-jL+1;i++) {
         fL(i) = fv(i+jL);
     }
@@ -89,9 +89,6 @@ void locape::transf_data()
 //    #pragma omp parallel for
     for (int i=1;i<K;i++) {
         YF.col(i) = (YF.col(i-1)-data(i-1)*one_vec).cwiseProduct(F.col(1).conjugate())+data(M+i-1)*F.col(M-1);
-        point1 = data(i-1);point2 = data(M+i-1); vec1 = YF.col(i-1)-data(i-1)*one_vec;vec2 = F.col(1).conjugate();
-        vec3 = (YF.col(i-1)-data(i-1)*one_vec).cwiseProduct(F.col(1).conjugate()); vec4 = F.col(M-1);
-        vec5 = data(M+i-1)*F.col(M-1); vec6 = vec3+vec5; vec7 = point2*vec4; point3 = vec4(0); point4 = complex<float> (0.0019160000374540687,8.70000003487803e-05)*complex<float> (0.014179953373968601,0.9998994469642639);
         YB.col(i) = (YB.col(i-1)-dataB(i-1)*one_vec).cwiseProduct(F.col(1).conjugate())+dataB(M+i-1)*F.col(M-1);
     }
 }
@@ -107,6 +104,9 @@ void locape::locape_calculate(const char* filename){
     MatrixXcd Xi1 = Eigen::MatrixXcd::Zero(indcol.size(),YF.cols());
     MatrixXcd Fsub = Eigen::MatrixXcd::Zero(indcol.size(),M);
 
+    omp_set_dynamic(0);
+    omp_set_nested(1);
+
 //    #pragma omp parallel for
     for (int jl=jL;jl<jH;jl++) {
         // pick columns from transformed data
@@ -121,6 +121,7 @@ void locape::locape_calculate(const char* filename){
         MatrixXcd Rinv = R.inverse();
         mid_value = 0; // initialize
         mid_ind = 0; // initialize
+
         #pragma omp parallel for
         for (int neta=0;neta<eta.size();neta++) {
             // calculate scalars
@@ -133,33 +134,20 @@ void locape::locape_calculate(const char* filename){
             }
             // calculate fourier vectors
             Eigen::VectorXcd a_vec1 = Eigen::VectorXcd::Zero(M);
-            double pointa1, pointa2, pointa3, pointa4, pointa5, pointa6, pointa7;
-            complex<double> pointa8;
-            #pragma omp parallel for
+//            #pragma omp parallel for
             for (int i=0;i<M;i++) {
                 a_vec1(i) = complex<double> (exp(-1*eta(neta)*i)*cos((2*pi*fv(jl-1))*i),exp(-1*eta(neta)*i)*sin((2*pi*fv(jl-1))*i));
-                pointa1 = -1*eta(neta); pointa2 = fv(jl-1);
-                pointa3 = exp(-1*eta(neta)*i); pointa4=cos((2*pi*fv(jl-1))*i);pointa5=sin((2*pi*fv(jl-1))*i);
-                pointa6 = exp(-1*eta(neta)*i)*cos((2*pi*fv(jl-1))*i); pointa7 = exp(-1*eta(neta)*i)*sin((2*pi*fv(jl-1))*i);
-                pointa8 = complex<double> (exp(-1*eta(neta)*i)*cos((2*pi*fv(jl-1))*i),exp(-1*eta(neta)*i)*sin((2*pi*fv(jl-1))*i));
             }
             Eigen::VectorXcd a_vec = Fsub*a_vec1;
-            VectorXcd vec1, vec2; complex<double> point1;
-            vec1 = Fsub.row(0).head(M);
-            vec2 = a_vec1.head(M);
-            point1 = (vec1.transpose()*vec2).value();
 
             // calculate least square vectors
             Eigen::VectorXcd s_vec = Eigen::VectorXcd::Zero(K);
-            #pragma omp parallel for
+//            #pragma omp parallel for
             for (int i=0;i<K;i++) {
                 s_vec(i) = complex<double> (1.0/Le*exp(-1*eta(neta)*i)*cos((-2*pi*fv(jl-1))*i),1.0/Le*exp(-1*eta(neta)*i)*sin((-2*pi*fv(jl-1))*i));
             }
 
             // calculate the amplitude
-            VectorXcd vec10 = (a_vec.conjugate().transpose()*Rinv*X1*s_vec);
-            VectorXcd vec11 = ((a_vec.conjugate().transpose()*Rinv)*a_vec);
-            complex<double> point10 = vec10(0)/vec11(0);
             Eigen::VectorXcd mag = (a_vec.conjugate().transpose()*Rinv*X1*s_vec)/((a_vec.conjugate().transpose()*Rinv)*a_vec);
             XLoCapE(neta,jl-jL) = mag(0);
             if (abs(mag(0))> abs(mid_value)){

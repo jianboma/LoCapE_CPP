@@ -30,7 +30,7 @@ public:
     VectorXcd fL; // the frequencies analysed
     VectorXi maxIndex;
 
-    double pi = 3.141592653589793;
+    const double pi = 3.141592653589793;
     int pn; // jump size
     int N; // data size
     int num_col;
