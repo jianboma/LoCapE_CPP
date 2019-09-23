@@ -93,7 +93,7 @@ void locape::transf_data()
     }
 }
 
-void locape::locape_calculate(const char* filename){
+void locape::locape_calculate(){
 
     XLoCapEV = Eigen::VectorXcd::Zero(jH-jL+1);
     maxIndex =  Eigen::VectorXi::Zero(jH-jL+1);

@@ -3,7 +3,7 @@
 //#include <QCoreApplication>
 #include <iostream>
 #include <fstream>
-#define EIGEN_USE_MKL_ALL
+#define EIGEN_USE_MKL_ALL // use intel MKL for mathematical computation
 #include "unsupported/Eigen/FFT"
 #include "Eigen/Dense"
 #include <omp.h>
@@ -77,7 +77,7 @@ int main(int argc, char** argv){
     locape1.transf_data();
     clock_t time_start = 0, time_end = 0;
     time_start = clock();
-    locape1.locape_calculate(argv[2]);
+    locape1.locape_calculate();
     time_end = clock();
     cout << " -> Elapsed time is "
        << (double)(time_end - time_start)/CLOCKS_PER_SEC<< " seconds." <<endl;
