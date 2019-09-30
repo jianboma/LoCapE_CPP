@@ -43,7 +43,7 @@ int main(int argc, char** argv){
         return -1;
     }
 
-    int n = 64*1024; // largest data length is 128k
+    int N = atoi(argv[3]); // largest data length is 128k
 
     // read in a text file that contains a real matrix stored in column major format
     // but read it into row major format
@@ -53,11 +53,11 @@ int main(int argc, char** argv){
         return -1;
     }
 
-    VectorXcd data = VectorXcd::Zero(n); // define a complex vector
+    VectorXcd data = VectorXcd::Zero(N); // define a complex vector
 
     // read fid into vector
     double cola=0, colb=0;
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i < N; i++){
         fin >> cola >> colb;
         data(i) = complex<double> (cola,colb);
         if (fin.eof())
@@ -65,11 +65,11 @@ int main(int argc, char** argv){
     }
 
     // set parameters
-    double f1 = double(0.2482); double f2 = double(0.2491);
-    int p = 20; int M = (int) floor(64*1024/2); int L = 64*2*1024;
+    double f1 = double(0.2482); double f2 = double(0.24821);
+    int p = atoi(argv[4]); int M = static_cast<int>(floor(N/2)) ; int L = N*2;
     VectorXd eta(11);
     for(int i=0; i<11;i++)
-        eta(i) = (double) (0+i*5e-5);
+        eta(i) = static_cast<double> (0+i*5e-5);
     VectorXcd Xdata = VectorXcd::Zero(L);
 
     locape locape1;
@@ -80,7 +80,7 @@ int main(int argc, char** argv){
     locape1.locape_calculate();
     time_end = clock();
     cout << " -> Elapsed time is "
-       << (double)(time_end - time_start)/CLOCKS_PER_SEC<< " seconds." <<endl;
+       << static_cast<double>(time_end - time_start)/CLOCKS_PER_SEC<< " seconds." <<endl;
 
     // write spectrum to a file
     VectorXd real_spec = (locape1.XLoCapEV).real();
