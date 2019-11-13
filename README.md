@@ -12,7 +12,7 @@ This is an C++ implementation of LoCapE algorithm, which is the localized Capon 
 * Intel Math Kernel Library ([MKL](https://software.intel.com/en-us/mkl) ) is used for mathematical computation. 
 * OpenMP is used for parallelizing the codes.
 
-### coding style
+### Coding style
 
 There are mainly three files: main.cpp, locape.cpp and locape.h
 * main.cpp contains data input reading, pre-processing, excuting locape algorithm and writing output.
@@ -24,6 +24,12 @@ There are mainly three files: main.cpp, locape.cpp and locape.h
 ```
 * locape.cpp is the file that contains core implementation of the algorithm
 
+
+### Compile the implementation
+The implementation uses MKL. MKL lib need to be provided. Suppose your MKL lib is installed in MKL_DIR (e.g. MKL_DIR=/opt/intel), the compiling code is
+```
+g++ -m64 -I$MKL_DIR/lib/intel64 main.cpp locape.h locape.cpp -L$MKL_DIR/mkl/lib/intel64 -Wl,--no-as-needed -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -lm -ldl -o LoCapE
+```
 ## TODO
 * Optimize the implementation with GPU
 
