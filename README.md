@@ -10,7 +10,7 @@ This is an C++ implementation of LoCapE algorithm, which is the localized Capon 
 
 * This implementation uses [eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library for matrix manipulation. 
 * Intel Math Kernel Library ([MKL](https://software.intel.com/en-us/mkl) ) is used for mathematical computation. 
-
+* OpenMP is used for parallelizing the codes.
 
 ### coding style
 
