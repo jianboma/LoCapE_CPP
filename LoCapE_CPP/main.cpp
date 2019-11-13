@@ -38,8 +38,8 @@ int main(int argc, char** argv){
 
 //    QCoreApplication a(argc, argv);
     // check for an argument
-    if (argc<2){
-        cout << "Usage: " << argv[0] << " " << " filename" << endl;
+    if (argc<5){
+        cout << "Usage: " << argv[0] << " " << " Input_filepath Output_filepath Input_length start_freq end_freq" << endl;
         return -1;
     }
 
@@ -65,7 +65,8 @@ int main(int argc, char** argv){
     }
 
     // set parameters
-    double f1 = double(0.2482); double f2 = double(0.24821);
+//    double f1 = double(0.2482); double f2 = double(0.24821);
+    double f1 = atoi(argv[4]); double f2 = atoi(argv[5]);
     int p = atoi(argv[4]); int M = static_cast<int>(floor(N/2)) ; int L = N*2;
     VectorXd eta(11);
     for(int i=0; i<11;i++)
