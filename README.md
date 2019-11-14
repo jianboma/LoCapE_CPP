@@ -40,7 +40,8 @@ Once built, you can validate the implementation with matlab implementation. The 
 
 An example code uses built C++ implementation is as follow
 
-```./LoCapE ./data/Simulated_NMR.txt ./data/spectrum_simulated_NMR.txt 65536 20 2 0.2465 0.2532
+```
+./LoCapE ./data/Simulated_NMR.txt ./data/spectrum_simulated_NMR.txt 65536 20 2 0.2465 0.2532
 ```
 ## TODO
 * Optimize the implementation with GPU
