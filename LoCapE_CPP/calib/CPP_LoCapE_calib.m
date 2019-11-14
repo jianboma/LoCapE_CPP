@@ -22,7 +22,7 @@
 % % snr = 25;
 % % sigma = sqrt(0.5*10^(-snr/10));
 % % x0 = exp(1i*2*pi*f1*n)+sigma*(randn(1,N)+1i*randn(1,N));
-% % writedata(x0, './exponential.txt');
+% % writedata(x0, './data/exponential.txt');
 % % 
 % % 
 % % 
@@ -82,7 +82,7 @@
 % clc;
 
 % load the signal
-data = load('../../data/ss1_8.mat'); 
+data = load('./data/ss1_8.mat'); 
 x0 = data.data;
 x0 = x0(1:64*1024); % 64Kb is used in Mnova
 N = length(x0);
