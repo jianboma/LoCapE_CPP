@@ -22,7 +22,7 @@
 % % snr = 25;
 % % sigma = sqrt(0.5*10^(-snr/10));
 % % x0 = exp(1i*2*pi*f1*n)+sigma*(randn(1,N)+1i*randn(1,N));
-% % writedata(x0, './data/exponential.txt');
+% % writedata(x0, '../data/exponential.txt');
 % % 
 % % 
 % % 
@@ -68,7 +68,7 @@
 % % % data calculated by C++ code
 % % command = ['your command'];
 % % % system(command);
-% % [data_real, data_imag] = read_data('./data/spectrum.txt');
+% % [data_real, data_imag] = read_data('../data/spectrum.txt');
 % % plot(fv(jL:jH),data_real,'-x'); hold on;plot(fv(jL:jH),data_imag,'-x');
 % % axis([fsta fend -0.05 0.05]);
 
@@ -88,11 +88,11 @@ x0 = x0(1:64*1024); % 64Kb is used in Mnova
 N = length(x0);
 snr = 25;
 % s = rng;
-s=load('../../seed_analysis_different_slicewindow.mat');
+s=load('./seed.mat');
 rng(s.s);
 sigma = sqrt(0.5*(x0*x0')/N*10^(-snr/10));
 x0 = x0+sigma*(randn(1,N)+1i*randn(1,N));
-% writedata(x0, './data/Simulated_NMR.txt');
+% writedata(x0, '../data/Simulated_NMR.txt');
 
 
 fs = 500.13*10^6;
@@ -136,7 +136,7 @@ hold on;
 % data calculated by C++ code
 command = ['your command'];
 % system(command);
-[data_real, data_imag] = read_data('./data/spectrum_simulated_NMR.txt');
+[data_real, data_imag] = read_data('../data/spectrum_simulated_NMR.txt');
 plot(fv(jL:jH),data_real,'-x'); %hold on;plot(fv(jL:jH),data_imag,'-x');
 axis([fsta fend -0.5 1.2]);
 grid on; 
