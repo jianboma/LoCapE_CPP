@@ -38,13 +38,14 @@ g++ -m64 -I$MKL_DIR/lib/intel64 main.cpp locape.h locape.cpp -L$MKL_DIR/mkl/lib/
 ### Input arguments
 
 Input arguments are:
-1 input signal (input file path)
-2 output file path
-3 data length for analysis ('N' in C-codes)
-4 localization region size ('p' in C-codes)
-5 frequency grid number interpolation ('pn' in C-codes)
-6 starting point of frequency range ('f1' in C-codes)
-7 ending point of frequency range ('f1' in C-codes)
+
+1. input signal (input file path)
+2. output file path
+3. data length for analysis ('N' in C-codes)
+4. localization region size ('p' in C-codes)
+5. frequency grid number interpolation ('pn' in C-codes)
+6. starting point of frequency range ('f1' in C-codes)
+7. ending point of frequency range ('f1' in C-codes)
 
 ### Compare matlab implementation with C++ implementation
 
