@@ -45,7 +45,7 @@ Input arguments are:
 4. localization region size ('p' in C-codes)
 5. frequency grid number interpolation ('pn' in C-codes)
 6. starting point of frequency range ('f1' in C-codes)
-7. ending point of frequency range ('f1' in C-codes)
+7. ending point of frequency range ('f2' in C-codes)
 
 ### Compare matlab implementation with C++ implementation
 
