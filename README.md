@@ -2,7 +2,7 @@
 C++ implementation of LoCapE algorithm
 
 
-## Implementation high-level discription
+## Implementation high-level description
 
 This is an C++ implementation of LoCapE algorithm, which is the localized Capon estimator {link}.  
 
